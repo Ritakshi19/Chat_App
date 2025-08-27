@@ -1,8 +1,6 @@
-
 import 'dart:async';
 
 import 'package:chat_app/Model/User_Data.dart';
-
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,29 +14,14 @@ class ChatScreen extends StatefulWidget {
 }
 
 class ChatScreenState extends State<ChatScreen> {
- 
+  List messages = [];
+
   TextEditingController textController = TextEditingController();
- // late StreamSubscription<QuerySnapshot> messageSubscription;
+  late StreamSubscription<QuerySnapshot> messageSubscription;
   bool isLoading = true;
   final ScrollController scrollController = ScrollController();
 
-  
-
-
-
-  
-
-        
-
-  // void sendMessage() {
-  //   if (textController.text.isNotEmpty) {
-  //     Firebaseservices.sendMessage(
-  //       widget.user, 
-  //       textController.text
-  //     );
-  //     textController.clear();
-  //   }
-  // }
+  // Scroll to bottom when new messages arrive
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +41,8 @@ class ChatScreenState extends State<ChatScreen> {
               children: [
                 Text(widget.user.name, style: TextStyle(fontSize: 16)),
                 Text(
-                  "Online"
+                  widget.user.isOnline ? "Online" : "Offline",
+                  style: TextStyle(fontSize: 12),
                 ),
               ],
             ),
@@ -67,8 +51,28 @@ class ChatScreenState extends State<ChatScreen> {
       ),
       body: Column(
         children: [
-          
-        buildMessageInput(),
+          Expanded(
+            child:
+                isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : messages.isEmpty
+                    ? Center(
+                      child: Text(
+                        "No messages yet.\nStart a conversation!",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                    )
+                    : ListView.builder(
+                      controller: scrollController,
+                      reverse: false,
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        final message = messages[index];
+                      },
+                    ),
+          ),
+          buildMessageInput(),
         ],
       ),
     );
@@ -89,14 +93,14 @@ class ChatScreenState extends State<ChatScreen> {
                 ),
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
               ),
-              onSubmitted: (_) => (){},
+              onSubmitted: (_) => () {},
             ),
           ),
           SizedBox(width: 10),
           CircleAvatar(
             backgroundColor: Colors.blue,
             child: IconButton(
-              onPressed: (){},
+              onPressed: () {},
               icon: Icon(Icons.send, color: Colors.white),
             ),
           ),

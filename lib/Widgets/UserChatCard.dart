@@ -28,28 +28,29 @@ class _UserChatCardState extends State<UserChatCard> {
           title: Text(widget.user.name),
           subtitle: Text(widget.user.lastMessage, maxLines: 1),
           trailing: Text(
-            formatDate(widget.user.createdAt),
-            style: TextStyle(fontSize: 12, color: Colors.grey),
+            "12:00",
+            // formatDate(widget.user.createdAt),
+            // style: TextStyle(fontSize: 12, color: Colors.grey),
           ),
         ),
       ),
     );
   }
 
-  String formatDate(String dateString) {
-    try {
-      final date = DateTime.parse(dateString);
-      final now = DateTime.now();
-      final today = DateTime(now.year, now.month, now.day);
-      final messageDate = DateTime(date.year, date.month, date.day);
+  // String formatDate(String dateString) {
+  //   try {
+  //     final date = DateTime.parse(dateString);
+  //     final now = DateTime.now();
+  //     final today = DateTime(now.year, now.month, now.day);
+  //     final messageDate = DateTime(date.year, date.month, date.day);
 
-      if (messageDate.isAtSameMomentAs(today)) {
-        return '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
-      } else {
-        return '${date.day}/${date.month}';
-      }
-    } catch (e) {
-      return dateString;
-    }
-  }
+  //     if (messageDate.isAtSameMomentAs(today)) {
+  //       return '${date.hour}:${date.minute.toString().padLeft(2, '0')}';
+  //     } else {
+  //       return '${date.day}/${date.month}';
+  //     }
+  //   } catch (e) {
+  //     return dateString;
+  //   }
+  // }
 }
